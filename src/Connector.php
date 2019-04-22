@@ -131,6 +131,18 @@ class Connector extends Client
         $response = new Response();
 
         try {
+            $_COOKIE = $request->cookies;
+
+            if (strtoupper($request->method()) == 'GET') {
+              $_GET = $_REQUEST;
+            } else {
+              $_POST = $_REQUEST;
+            }
+      
+            $_SERVER['REQUEST_METHOD'] = strtoupper($request->method());
+            $_SERVER['REQUEST_URI'] = $request->here;
+            $_SERVER['REDIRECT_URL'] = $_SERVER['REQUEST_URI'];
+
             if (is_a($request, '\Cake\Http\ServerRequest')) {
                 // Run with PSR-7 dispatcher
                 $response = $this->runApplication($request);
